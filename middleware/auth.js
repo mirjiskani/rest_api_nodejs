@@ -8,9 +8,9 @@ module.exports = async (req, res, next) => {
         if (await user.findById(verifyToken.data.id)) {
             next();
         } else {
-            res.status(401).json({ message: "Invalid token" })
+            res.status(401).json({ message: "Invalid token credentials" })
         }
     } catch (error) {
-        res.status(401).json({ message: "Invalid token" })
+        res.status(401).json({ message: "Invalid token credentials" })
     }
 }
