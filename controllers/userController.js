@@ -1,5 +1,9 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/users')
+const jwt = require('jsonwebtoken');
+const doteve = require('dotenv').config();
+
+const jwt_secret = process.env.JWT_SECRET;
 
 const getLogin = async (req, res, next) => {
     const { email, password } = req.body
@@ -7,7 +11,16 @@ const getLogin = async (req, res, next) => {
 
     if (user) {
         if (await bcrypt.compare(password, user.password)) {
-            res.status(200).json({ message: "Logged in successfully", data: user })
+            const data = {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
+            //{
+            //     expiresIn: '1h'
+            // }
+            const signedToken = jwt.sign({ data }, 'secret');
+            res.status(200).json({ message: "Logged in successfully", data: user, token: signedToken })
         } else {
             res.status(200).json({ message: "Invalid credentials", data: user })
         }

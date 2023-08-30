@@ -6,15 +6,16 @@ const {
    updateProduct,
    deleteProduct
 } = require('../controllers/productController');
+const auth = require('../middleware/auth');
 
 // getting list of 
-router.get('/', getListProducts);
+router.get('/',auth, getListProducts);
 // creating products into database 
-router.post('/create-product', createProduct);
+router.post('/create-product',auth, createProduct);
 
 // creating products into database 
-router.put('/update-product', updateProduct);
+router.put('/update-product',auth, updateProduct);
 
-router.post('/delete-product',deleteProduct);
+router.post('/delete-product',auth,deleteProduct);
 
 module.exports = router;
