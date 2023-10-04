@@ -1,22 +1,21 @@
 const express = require('express')
 const users = require('./routes/users')
 const products = require('./routes/product')
-const mongoose = require('mongoose');
-const app = express()
-const port = 3000
+const {main} = require('./db_connect/db')
+const cors = require('cors');
 
-const main = async ()=>{
-      mongoose.connect('mongodb://127.0.0.1:27017/rest_api').then(()=>{
-        console.log("connected");
-      }).catch((error)=>{
-        console.log(error);
-      });
-}
+const app = express()
+const port = 5000
 
 main();
 app.use(express.urlencoded({extended: true}));
 app.use(express.json())
 // Handling routes request
+const corsOptions = {
+  origin: 'http://localhost:4200', // Replace with your frontend's origin
+};
+
+app.use(cors(corsOptions));
 app.use("/users",users)
 app.use("/products",products)
 
